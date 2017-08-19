@@ -49,8 +49,12 @@ read.maf = function(maf, removeSilent = TRUE, useAll = TRUE, gisticAllLesionsFil
         maf = suppressWarnings(data.table::fread(input = paste('zcat <', maf), sep = '\t', stringsAsFactors = FALSE, verbose = FALSE, data.table = TRUE, showProgress = TRUE, header = TRUE))
       }
     } else{
+    if(verbose){
       suppressWarnings(maf <- data.table::fread(input = maf, sep = "\t", stringsAsFactors = FALSE, verbose = FALSE, data.table = TRUE, showProgress = TRUE, header = TRUE))
+}else{
+suppressWarnings(maf <- data.table::fread(input = maf, sep = "\t", stringsAsFactors = FALSE, verbose = FALSE, data.table = TRUE, showProgress = FALSE, header = TRUE))
     }
+}
   }
 
   #validate MAF file
