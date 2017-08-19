@@ -68,13 +68,17 @@ validateMaf = function(maf, rdup = TRUE, isTCGA = isTCGA, chatty = TRUE){
   maf.vts = unique(as.character(maf[,Variant_Type]))
 
   if(length(maf.vcs[!maf.vcs %in% c(silent, vc.nonSilent)] > 0)){
-    message("NOTE: Non MAF specific values in Variant_Classification column:")
-    print(maf.vcs[!maf.vcs %in% c(silent, vc.nonSilent)])
+    if(chatty){
+      message("NOTE: Non MAF specific values in Variant_Classification column:")
+      print(maf.vcs[!maf.vcs %in% c(silent, vc.nonSilent)])
+    }
   }
 
   if(length(maf.vts[!maf.vts %in% vt] > 0)){
-    message("NOTE: Non MAF specific values in Variant_Type column:")
-    print(maf.vts[!maf.vts %in% vt])
+    if(chatty){
+      message("NOTE: Non MAF specific values in Variant_Type column:")
+      print(maf.vts[!maf.vts %in% vt])
+    }
   }
 
   return(maf)
