@@ -31,8 +31,10 @@
 #' @export
 
 
-read.maf = function(maf, removeSilent = TRUE, useAll = TRUE, gisticAllLesionsFile = NULL, gisticAmpGenesFile = NULL,
-                    gisticDelGenesFile = NULL, cnTable = NULL, removeDuplicatedVariants = TRUE, isTCGA = FALSE, verbose = TRUE){
+read.maf = function(maf, removeSilent = TRUE, useAll = TRUE, gisticAllLesionsFile = NULL, 
+  gisticAmpGenesFile = NULL, gisticDelGenesFile = NULL, cnTable = NULL, 
+  removeDuplicatedVariants = TRUE, 
+                    isTCGA = FALSE, verbose = TRUE, removeVariantClasses = NULL){
 
   if(is.data.frame(x = maf)){
     maf  = data.table::setDT(maf)
@@ -46,7 +48,7 @@ read.maf = function(maf, removeSilent = TRUE, useAll = TRUE, gisticAllLesionsFil
         suppressWarnings(maf <- data.table(read.csv(file = maf.gz, header = TRUE, sep = '\t', stringsAsFactors = FALSE, comment.char = "#")))
         close(maf.gz)
       } else{
-        maf = suppressWarnings(data.table::fread(input = paste('zcat <', maf), sep = '\t', stringsAsFactors = FALSE, verbose = FALSE, data.table = TRUE, showProgress = TRUE, header = TRUE))
+        maf = suppressWarnings(data.table::fread(input = paste('zcat <', maf), sep = '\t', stringsAsFactors = FALSE, verbose = FALSE, data.table = TRUE, showProgress = verbose, header = TRUE))
       }
     } else{
     if(verbose){
@@ -111,6 +113,9 @@ suppressWarnings(maf <- data.table::fread(input = maf, sep = "\t", stringsAsFact
         message(message(paste('Excluding',nrow(maf.silent), 'silent variants.')))
       }
     }
+  }else if(!is.null(removeVariantClasses){
+    #remove variants in the classes specified here
+      maf = maf[!Variant_Classification %in% removeVariantClasses] #Remove silent variants from main table
   }else{
     if(verbose){
       message('Silent variants are being kept!')
