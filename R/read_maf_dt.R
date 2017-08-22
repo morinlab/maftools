@@ -113,7 +113,7 @@ suppressWarnings(maf <- data.table::fread(input = maf, sep = "\t", stringsAsFact
         message(message(paste('Excluding',nrow(maf.silent), 'silent variants.')))
       }
     }
-  }else if(!is.null(removeVariantClasses){
+  }else if(!is.null(removeVariantClasses)){
     #remove variants in the classes specified here
       maf = maf[!Variant_Classification %in% removeVariantClasses] #Remove silent variants from main table
   }else{
